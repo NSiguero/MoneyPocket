@@ -1,0 +1,43 @@
+Date,Description,Category,Amount,Balance
+01/01/2024,Direct Deposit (Salary),Income,+3500.00,3500.00
+01/05/2024,Mortgage Payment,Housing,-1200.00,2300.00
+01/08/2024,Grocery Store,Food,-150.00,2150.00
+01/10/2024,Utility Bill (Electric),Utilities,-120.00,2030.00
+01/15/2024,Car Payment,Transportation,-350.00,1680.00
+01/20/2024,Restaurant,Dining Out,-60.00,1620.00
+01/25/2024,Internet Bill,Utilities,-70.00,1550.00
+02/01/2024,Direct Deposit (Salary),Income,+3500.00,5050.00
+02/05/2024,Mortgage Payment,Housing,-1200.00,3850.00
+02/10/2024,Grocery Store,Food,-180.00,3670.00
+02/12/2024,Phone Bill,Utilities,-100.00,3570.00
+02/14/2024,Gym Membership,Health & Fitness,-50.00,3520.00
+02/18/2024,Restaurant,Dining Out,-80.00,3440.00
+02/25/2024,Medical Insurance,Insurance,-300.00,3140.00
+03/01/2024,Direct Deposit (Salary),Income,+3500.00,6640.00
+03/05/2024,Mortgage Payment,Housing,-1200.00,5440.00
+03/07/2024,Grocery Store,Food,-160.00,5280.00
+03/09/2024,Dining Out (Family Meal),Dining Out,-120.00,5160.00
+03/15/2024,Car Insurance Payment,Insurance,-350.00,4810.00
+03/20/2024,Entertainment (Movies),Entertainment,-50.00,4760.00
+03/25/2024,Utility Bill (Water),Utilities,-90.00,4670.00
+04/01/2024,Direct Deposit (Salary),Income,+3500.00,8170.00
+04/05/2024,Mortgage Payment,Housing,-1200.00,6970.00
+04/08/2024,Grocery Store,Food,-140.00,6830.00
+04/10/2024,Netflix Subscription,Entertainment,-15.00,6815.00
+04/15/2024,Restaurant,Dining Out,-75.00,6740.00
+04/20/2024,Gym Membership,Health & Fitness,-50.00,6690.00
+04/25/2024,Credit Card Payment,Debt,-300.00,6390.00
+05/01/2024,Direct Deposit (Salary),Income,+3500.00,9890.00
+05/05/2024,Mortgage Payment,Housing,-1200.00,8690.00
+05/08/2024,Grocery Store,Food,-130.00,8560.00
+05/10/2024,Gas (Car),Transportation,-50.00,8510.00
+05/15/2024,Car Payment,Transportation,-350.00,8160.00
+05/18/2024,Entertainment (Concert),Entertainment,-120.00,8040.00
+05/22/2024,Cell Phone Bill,Utilities,-90.00,7950.00
+06/01/2024,Direct Deposit (Salary),Income,+3500.00,11450.00
+06/05/2024,Mortgage Payment,Housing,-1200.00,10250.00
+06/07/2024,Grocery Store,Food,-180.00,10070.00
+06/10/2024,Internet Bill,Utilities,-70.00,10000.00
+06/12/2024,Medical Bill Payment,Health Care,-150.00,9850.00
+06/15/2024,Restaurant,Dining Out,-60.00,9790.00
+06/25/2024,Credit Card Payment,Debt,-300.00,9490.00

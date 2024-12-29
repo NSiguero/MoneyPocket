@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <title>MoneyPocket</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {}
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .card {
+            @apply bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg transition-all duration-200;
+        }
+        .btn-primary {
+            @apply px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 
+                   transform hover:-translate-y-0.5 transition-all duration-200
+                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                   disabled:opacity-50 disabled:cursor-not-allowed
+                   font-semibold text-sm;
+        }
+        .btn-secondary {
+            @apply px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white 
+                   rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors;
+        }
+        .file-drop-area {
+            @apply relative border-2 border-dashed border-gray-300 dark:border-gray-600 
+                   rounded-lg p-8 text-center cursor-pointer
+                   hover:border-blue-500 dark:hover:border-blue-400 
+                   transition-all duration-200;
+        }
+        .file-drop-area input[type="file"] {
+            @apply absolute inset-0 w-full h-full opacity-0 cursor-pointer;
+        }
+        .file-drop-area .file-message {
+            @apply text-gray-500 dark:text-gray-400 mb-2;
+        }
+        .file-drop-area .file-selected {
+            @apply hidden text-sm text-blue-600 dark:text-blue-400 mt-2;
+        }
+        .upload-section {
+            @apply transition-all duration-500 transform;
+        }
+        .upload-section.hidden {
+            @apply opacity-0 scale-95;
+        }
+        .upload-section.visible {
+            @apply opacity-100 scale-100;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <nav class="bg-white dark:bg-gray-800 shadow-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span class="text-xl font-bold text-gray-800 dark:text-white">MoneyPocket</span>
+                </div>
+                <button id="theme-toggle" class="btn-secondary">
+                    <i data-feather="moon" class="dark:hidden"></i>
+                    <i data-feather="sun" class="hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Welcome Section -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-800 dark:text-white mb-4">Your Financial Dashboard</h1>
+            <p class="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Track your spending, monitor your savings, and make informed financial decisions with MoneyPocket.
+            </p>
+        </div>
+
+        <!-- File Upload Card -->
+        <div class="card mb-12 upload-card">
+            <div class="max-w-xl mx-auto">
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4 text-center">Import Your Transactions</h2>
+                <p class="text-gray-600 dark:text-gray-400 mb-6 text-center">
+                    Upload your CSV file to get started with your financial analysis
+                </p>
+                <div id="uploadSection">
+                    <form action="/" method="post" enctype="multipart/form-data" id="uploadForm">
+                        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 relative">
+                            <input type="file" id="fileInput" name="file" accept=".csv" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                            <div class="flex flex-col items-center pointer-events-none">
+                                <i data-feather="upload-cloud" class="w-10 h-10 text-gray-400 dark:text-gray-500 mb-4"></i>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">
+                                    <span class="text-blue-600 dark:text-blue-400 font-semibold">Click to upload</span> or drag and drop
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">CSV files only</p>
+                                <div id="selectedFileName" class="text-sm text-blue-600 dark:text-blue-400 mt-4 hidden"></div>
+                            </div>
+                        </div>
+                        <div class="mt-6 text-center">
+                            <button type="submit" id="analyzeButton" class="btn-primary inline-flex items-center" disabled>
+                                <i data-feather="trending-up" class="w-4 h-4 mr-2"></i>
+                                <span>Analyze Transactions</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        {% if monthly_summary %}
+        <!-- Analysis Results -->
+        <div class="metrics-section space-y-8">
+            <!-- Key Metrics -->
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="card">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-sm text-gray-500 dark:text-gray-400">Monthly Income</div>
+                            <div class="p-2 rounded-full bg-green-100 dark:bg-green-900">
+                                <i data-feather="trending-up" class="w-4 h-4 text-green-600 dark:text-green-400"></i>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-bold text-gray-800 dark:text-white">
+                            ${{ "{:,.2f}".format(monthly_summary['total_income']) }}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-sm text-gray-500 dark:text-gray-400">Monthly Expenses</div>
+                            <div class="p-2 rounded-full bg-red-100 dark:bg-red-900">
+                                <i data-feather="trending-down" class="w-4 h-4 text-red-600 dark:text-red-400"></i>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-bold text-gray-800 dark:text-white">
+                            ${{ "{:,.2f}".format(monthly_summary['total_expenses']) }}
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-sm text-gray-500 dark:text-gray-400">Monthly Savings</div>
+                            <div class="p-2 rounded-full bg-blue-100 dark:bg-blue-900">
+                                <i data-feather="dollar-sign" class="w-4 h-4 text-blue-600 dark:text-blue-400"></i>
+                            </div>
+                        </div>
+                        <div class="text-2xl font-bold text-gray-800 dark:text-white">
+                            ${{ "{:,.2f}".format(monthly_summary['savings']) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 divide-x divide-gray-200 dark:divide-gray-700">
+                    <!-- Spending Chart -->
+                    <div class="card lg:pr-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Spending Trend</h2>
+                            <button class="btn-secondary text-sm">
+                                <i data-feather="calendar" class="w-4 h-4 mr-1 inline"></i>
+                                Last 6 Months
+                            </button>
+                        </div>
+                        <img src="data:image/png;base64,{{ spending_chart }}" 
+                             alt="Spending Trend" 
+                             class="w-full rounded-lg">
+                    </div>
+
+                    <!-- Top Categories -->
+                    <div class="card lg:pl-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Top Spending Categories</h2>
+                            <button onclick="showAllCategories()" class="btn-secondary text-sm">
+                                <i data-feather="pie-chart" class="w-4 h-4 mr-1 inline"></i>
+                                View All
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            {% for category, amount in monthly_summary.category_spending.items() %}
+                            <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-700">
+                                <div class="flex items-center">
+                                    <div class="p-2 rounded-full bg-blue-100 dark:bg-blue-900 mr-3">
+                                        <i data-feather="shopping-bag" class="w-4 h-4 text-blue-600 dark:text-blue-400"></i>
+                                    </div>
+                                    <div class="text-gray-700 dark:text-gray-300">{{ category }}</div>
+                                </div>
+                                <div class="font-medium text-gray-800 dark:text-white">${{ "{:,.2f}".format(amount) }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Transactions -->
+            <div class="border-t border-gray-200 dark:border-gray-700 pt-8">
+                <div class="card">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Recent Transactions</h2>
+                        <button onclick="showAllTransactions()" class="btn-secondary text-sm">
+                            <i data-feather="list" class="w-4 h-4 mr-1 inline"></i>
+                            View All
+                        </button>
+                    </div>
+                    <div class="space-y-4">
+                        {% for transaction in recent_transactions %}
+                        <div class="flex items-center justify-between p-4 rounded-lg bg-gray-50 dark:bg-gray-700">
+                            <div class="flex items-center space-x-4">
+                                <div class="p-2 rounded-full {% if transaction.Amount < 0 %}bg-red-100 dark:bg-red-900{% else %}bg-green-100 dark:bg-green-900{% endif %}">
+                                    <i data-feather="{% if transaction.Amount < 0 %}arrow-down{% else %}arrow-up{% endif %}" 
+                                       class="w-4 h-4 {% if transaction.Amount < 0 %}text-red-600 dark:text-red-400{% else %}text-green-600 dark:text-green-400{% endif %}"></i>
+                                </div>
+                                <div>
+                                    <div class="font-medium text-gray-800 dark:text-white">{{ transaction.Description }}</div>
+                                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ transaction.Date.strftime('%B %d, %Y') }}</div>
+                                </div>
+                            </div>
+                            <div class="font-medium {% if transaction.Amount < 0 %}text-red-600 dark:text-red-400{% else %}text-green-600 dark:text-green-400{% endif %}">
+                                {% if transaction.Amount < 0 %}
+                                    -${{ "{:,.2f}".format(transaction.Amount * -1) }}
+                                {% else %}
+                                    ${{ "{:,.2f}".format(transaction.Amount) }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-12">
+        <div class="container mx-auto px-4 py-6">
+            <div class="text-center text-gray-600 dark:text-gray-400">
+                <p>© 2024 MoneyPocket. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Feather Icons
+        feather.replace()
+
+        // Dark mode toggle
+        const html = document.documentElement
+        const themeToggle = document.getElementById('theme-toggle')
+        
+        // Check for saved theme preference or default to light
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.remove('light')
+            html.classList.add('dark')
+        } else {
+            html.classList.remove('dark')
+            html.classList.add('light')
+        }
+
+        themeToggle.addEventListener('click', () => {
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark')
+                html.classList.add('light')
+                localStorage.theme = 'light'
+            } else {
+                html.classList.remove('light')
+                html.classList.add('dark')
+                localStorage.theme = 'dark'
+            }
+            feather.replace() // Refresh icons
+        })
+
+        // File upload handling
+        const fileInput = document.getElementById('fileInput')
+        const analyzeButton = document.getElementById('analyzeButton')
+        const selectedFileName = document.getElementById('selectedFileName')
+        const uploadForm = document.getElementById('uploadForm')
+
+        // File input handling
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0]
+            if (file) {
+                if (!file.name.endsWith('.csv')) {
+                    alert('Please upload a CSV file')
+                    fileInput.value = ''
+                    return
+                }
+                selectedFileName.textContent = file.name
+                selectedFileName.classList.remove('hidden')
+                analyzeButton.disabled = false
+            }
+        })
+
+        uploadForm.addEventListener('submit', (e) => {
+            if (!fileInput.files[0]) {
+                e.preventDefault()
+                return
+            }
+            
+            analyzeButton.disabled = true
+            analyzeButton.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Analyzing...
+            `
+        })
+
+        // Handle successful form submission
+        if (document.querySelector('.metrics-section')) {
+            document.querySelector('.upload-card').style.display = 'none'
+            document.querySelector('.metrics-section').scrollIntoView({ behavior: 'smooth' })
+        }
+
+        // Handle View All buttons
+        function showAllCategories() {
+            // You can implement a modal or new page view here
+            alert('View all categories functionality coming soon!')
+        }
+
+        function showAllTransactions() {
+            // You can implement a modal or new page view here
+            alert('View all transactions functionality coming soon!')
+        }
+
+        // Initialize feather icons
+        feather.replace()
+    </script>
+</body>
