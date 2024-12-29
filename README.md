@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # MoneyPocket - Personal Finance Dashboard
 
 MoneyPocket is a web-based financial dashboard that helps you track your spending, monitor savings, and make informed financial decisions. It provides visual analytics and categorization of your transactions.
@@ -124,3 +125,7 @@ For support, please open an issue in the GitHub repository or contact the mainta
 - Built with Flask and TailwindCSS
 - Uses Feather Icons for UI elements
 - Matplotlib for data visualization
+=======
+# MoneyPocket
+A free, open-source option to track your expenses and take care of your personal finance
+>>>>>>> ba4f56efd4592c891bf76c801cc6e20f483f8fca
