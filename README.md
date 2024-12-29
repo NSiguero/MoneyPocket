@@ -2,6 +2,8 @@
 
 MoneyPocket is a web-based financial dashboard that helps you track your spending, monitor savings, and make informed financial decisions. It provides visual analytics and categorization of your transactions.
 
+- Made by NSiguero
+
 ## Features
 
 -  Interactive financial dashboard
@@ -19,16 +21,9 @@ MoneyPocket is a web-based financial dashboard that helps you track your spendin
 git clone https://github.com/yourusername/MoneyPocket.git
 cd MoneyPocket
 ```
-
-2. Create a virtual environment and activate it:
+2. Install the required packages:
 ```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install the required packages:
-```bash
-pip install flask pandas matplotlib numpy
+pip install -r requirements.txt
 ```
 
 ## Usage
@@ -117,7 +112,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Support
 
-For support, please open an issue in the GitHub repository or contact the maintainers.
+For support, please open an issue in the GitHub repository or contact me.
 
 ## Acknowledgments
 
@@ -125,5 +120,3 @@ For support, please open an issue in the GitHub repository or contact the mainta
 - Uses Feather Icons for UI elements
 - Matplotlib for data visualization
 =======
-# MoneyPocket
-A free, open-source option to track your expenses and take care of your personal finance
